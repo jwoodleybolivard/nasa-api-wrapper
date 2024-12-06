@@ -7,60 +7,100 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# nasa-api-wrapper
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este proyecto es una API que consume y procesa datos del proyecto DONKI de la NASA.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   PHP 8.4.1 o superior
+-   Composer 2.8.3
+-   Laravel 5.10
 
-## Learning Laravel
+## Instalación
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clonar el repositorio:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+git clone [https://github.com/jwoodleybolivard/nasa-api-wrapper.git](https://github.com/jwoodleybolivard/nasa-api-wrapper.git)
 
-## Laravel Sponsors
+cd nasa-donki-api
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. Instalar las dependencias:
 
-### Premium Partners
+```plaintext
+composer install
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. Instalar Dependencias de NPM:
 
-## Contributing
+```plaintext
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Copiar el archivo de configuración:
 
-## Code of Conduct
+```
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Configurar la API key de la NASA en el archivo .env:
 
-## Security Vulnerabilities
+```
+NASA_API_KEY=your_api_key_here
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6. Generar la clave de la aplicación:
 
-## License
+```
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+7. Iniciar el servidor de desarrollo:
+
+```
+php artisan serve
+```
+
+## Uso
+
+La API expone las siguientes rutas:
+
+-   GET /api/instruments: Retorna todos los instrumentos usados por DONKI.
+-   GET /api/activity-ids: Retorna todas las IDs de actividades existentes.
+-   GET /api/instrument-usage-percentages: Retorna el porcentaje de uso de cada instrumento.
+-   POST /api/instrument-activity-percentage: Retorna el porcentaje de uso de las actividades para un instrumento específico.
+
+## Colección de Postman
+
+Puedes importar la colección de Postman desde el archivo `NASA_DONKI_API.postman_collection.json` incluido en este repositorio.
+
+## Despliegue
+
+Este proyecto se desplegó en vercel
+
+## Arquitectura
+
+Este proyecto utiliza una arquitectura hexagonal (también conocida como puertos y adaptadores) para mantener una clara separación de responsabilidades y facilitar la prueba y el mantenimiento del código.
+
+## Principios SOLID
+
+El código sigue los principios SOLID:
+
+-   Single Responsibility: Cada clase tiene una única responsabilidad.
+-   Open/Closed: Las clases están abiertas para la extensión pero cerradas para la modificación.
+-   Liskov Substitution: Las implementaciones pueden ser sustituidas por sus abstracciones.
+-   Interface Segregation: Se utilizan interfaces específicas en lugar de una interfaz general.
+-   Dependency Inversion: Las dependencias se invierten, dependiendo de abstracciones en lugar de implementaciones concretas.
+
+## Contribución
+
+Las contribuciones son bienvenidas. Por favor, abre un issue para discutir los cambios propuestos antes de hacer un pull request.
+
+## Licencia
+
+Este proyecto no está licenciado
+
+#### Desarrollado con ❤️ por JEAN Woodley BOLIVARD

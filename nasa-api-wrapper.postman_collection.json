@@ -1,0 +1,100 @@
+{
+    "info": {
+        "_postman_id": "your-postman-id",
+        "name": "NASA API WRAPPER",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get All Instruments",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/api/instruments?api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "instruments"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get All Activity IDs",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/api/activity-ids?api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "activity-ids"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Instrument Usage Percentages",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/api/instrument-usage-percentages?api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "instrument-usage-percentages"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Activity Percentage By Instrument",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"instrument\": \"SWMF\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/instrument-activity-percentage?api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "instrument-activity-percentage"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000"
+        },
+        {
+            "key": "api_key",
+            "value": "your_api_key"
+        }
+    ]
+}
