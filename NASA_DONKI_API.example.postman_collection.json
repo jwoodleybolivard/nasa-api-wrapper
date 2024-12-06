@@ -1,0 +1,389 @@
+{
+    "info": {
+        "_postman_id": "unique-postman-id",
+        "name": "NASA DONKI API",
+        "description": "Collection for the NASA DONKI (Space Weather Database Of Notifications, Knowledge, Information) API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "https://api.nasa.gov"
+        },
+        {
+            "key": "api_key",
+            "value": "your_api_key"
+        }
+    ],
+    "item": [
+        {
+            "name": "Coronal Mass Ejection (CME)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/CME?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "CME"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "CME Analysis",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/CMEAnalysis?startDate=2023-01-01&endDate=2023-01-31&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "CMEAnalysis"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "mostAccurateOnly",
+                            "value": "true"
+                        },
+                        {
+                            "key": "speed",
+                            "value": "500"
+                        },
+                        {
+                            "key": "halfAngle",
+                            "value": "30"
+                        },
+                        {
+                            "key": "catalog",
+                            "value": "ALL"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Geomagnetic Storm (GST)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/GST?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "GST"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Interplanetary Shock (IPS)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/IPS?startDate=2023-01-01&endDate=2023-01-31&location=Earth&catalog=ALL&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "IPS"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "location",
+                            "value": "Earth"
+                        },
+                        {
+                            "key": "catalog",
+                            "value": "ALL"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Solar Flare (FLR)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/FLR?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "FLR"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Solar Energetic Particle (SEP)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/SEP?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "SEP"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Magnetopause Crossing (MPC)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/MPC?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "MPC"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Radiation Belt Enhancement (RBE)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/RBE?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "RBE"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "High Speed Stream (HSS)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/HSS?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "HSS"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "WSA+EnlilSimulation",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/WSAEnlilSimulations?startDate=2023-01-01&endDate=2023-01-31&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "WSAEnlilSimulations"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Notifications",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/DONKI/notifications?startDate=2023-01-01&endDate=2023-01-31&type=all&api_key={{api_key}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "DONKI",
+                        "notifications"
+                    ],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "2023-01-01"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "2023-01-31"
+                        },
+                        {
+                            "key": "type",
+                            "value": "all"
+                        },
+                        {
+                            "key": "api_key",
+                            "value": "{{api_key}}"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
