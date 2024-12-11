@@ -12,9 +12,4 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(DonkiRepositoryInterface::class, DonkiRepository::class);
     }
-
-    public function boot()
-    {
-        //
-    }
 }

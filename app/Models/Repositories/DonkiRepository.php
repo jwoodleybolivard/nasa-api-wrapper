@@ -4,9 +4,7 @@ namespace App\Models\Repositories;
 
 use App\Domain\Repositories\DonkiRepositoryInterface;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 class DonkiRepository implements DonkiRepositoryInterface
 {
@@ -14,7 +12,6 @@ class DonkiRepository implements DonkiRepositoryInterface
     private string $apiKey;
     private const TIMEOUT = 60;
     private const YEAR = 2023;
-    private const CACHE_TTL = 3600;
 
     public function __construct()
     {
@@ -24,62 +21,90 @@ class DonkiRepository implements DonkiRepositoryInterface
 
     public function getAllInstruments(): array
     {
-        return Cache::remember('all_instruments_' . self::YEAR, self::CACHE_TTL, function () {
-            return $this->fetchDataFromEndpoints('instruments');
-        });
+        $instruments = $this->fetchDataFromEndpoints('instruments');
+        return array_unique($instruments);
     }
 
     public function getAllActivityIds(): array
     {
-        return Cache::remember('all_activity_ids_' . self::YEAR, self::CACHE_TTL, function () {
-            return $this->fetchDataFromEndpoints('activityIDs');
-        });
+        $activityIds = $this->fetchDataFromEndpoints('activityIDs');
+        return array_unique($activityIds);
     }
-
 
     public function getInstrumentUsagePercentages(): array
     {
-        return Cache::remember('instrument_usage_percentages_' . self::YEAR, self::CACHE_TTL, function () {
-            $instruments = $this->getAllInstruments();
-            // $instruments = array_values(array_unique($instruments));
-            $usages = array_map([$this, 'getActivityPercentageByInstrument'], $instruments);
-            // $usages = array_values(array_unique($usages));
-            $totalUsage = array_sum($usages);
+        $instruments = $this->getAllInstruments();
+        $usageCounts = [];
 
-            $percentages = [];
-            foreach ($instruments as $index => $instrument) {
-                $percentages[$instrument] = $totalUsage > 0 ? $usages[$index] / $totalUsage : 0;
+        foreach ($instruments as $instrument) {
+            $usageCounts[$instrument] = 0;
+        }
+
+        $totalActivities = 0;
+
+        foreach ($instruments as $instrument) {
+            $percentageData = $this->getActivityPercentageByInstrument($instrument);
+            if (isset($percentageData[$instrument]) && is_array($percentageData[$instrument])) {
+                $usageCounts[$instrument] += array_sum($percentageData[$instrument]);
+                $totalActivities += array_sum($percentageData[$instrument]);
             }
+        }
 
-            return $percentages;
-        });
+        $percentages = [];
+        foreach ($usageCounts as $instrument => $count) {
+            if ($count > 0) {
+                $percentages[$instrument] = $totalActivities > 0 ? $count / $totalActivities : 0;
+            }
+        }
+
+        foreach ($percentages as $instrument => &$percentage) {
+            $percentage = round($percentage, 1);
+        }
+
+        $totalPercentage = array_sum($percentages);
+        if ($totalPercentage > 0) {
+            $diff = 1 - $totalPercentage;
+            if ($diff !== 0) {
+                foreach ($percentages as &$percentage) {
+                    $percentage += $diff;
+                    break;
+                }
+            }
+        }
+
+        return $percentages;
     }
+
 
     public function getActivityPercentageByInstrument(string $instrument): array
     {
-        return Cache::remember("instrument_percentage_{$instrument}_" . self::YEAR, self::CACHE_TTL, function () use ($instrument) {
-            $data = $this->fetchDataFromEndpoints('instrumentUsage', $instrument);
-            $totalActivities = $data['totalActivities'];
-            $instrumentActivities = $data['instrumentActivities'];
-            $activityPercentages = [];
-            foreach ($instrumentActivities as $activity => $count) {
-                $activityPercentages[$activity] = $count / $totalActivities;
-            }
+        $data = $this->fetchDataFromEndpoints('instrumentUsage', $instrument);
+        $totalActivities = $data['totalActivities'] ?? 0;
+        $instrumentActivities = $data['instrumentActivities'] ?? [];
 
-            // Asegurarse de que la suma de los porcentajes sea 1
-            $totalPercentage = array_sum($activityPercentages);
-            foreach ($activityPercentages as $activity => &$percentage) {
-                $percentage = round($percentage / $totalPercentage, 10);
+        $activityPercentages = [];
+        foreach ($instrumentActivities as $activityID => $count) {
+            if ($activityID !== 'Unknown') {
+                $activityPercentages[$activityID] = $totalActivities > 0 ? $count / $totalActivities : 0;
             }
-            return [$instrument => $activityPercentages];
-        });
-    }
+        }
 
-    public function getAllMagnetopauseCrossings(): array
-    {
-        return Cache::remember('all_magnetopause_crossings_' . self::YEAR, self::CACHE_TTL, function () {
-            return $this->fetchDataFromEndpoint('MPC');
-        });
+        $totalPercentage = array_sum($activityPercentages);
+        foreach ($activityPercentages as $activityID => &$percentage) {
+            $percentage = round($percentage, 1);
+        }
+
+        if ($totalPercentage > 0) {
+            $diff = 1 - array_sum($activityPercentages);
+            if ($diff !== 0) {
+                foreach ($activityPercentages as $activityID => &$percentage) {
+                    $percentage += $diff;
+                    break;
+                }
+            }
+        }
+
+        return [$instrument => $activityPercentages];
     }
 
     private function fetchDataFromEndpoints(string $dataType, string $instrument = ''): array
@@ -88,10 +113,22 @@ class DonkiRepository implements DonkiRepositoryInterface
         $result = [];
         foreach ($endpoints as $endpoint) {
             $data = $this->fetchDataFromEndpoint($endpoint);
-            $result = array_merge($result, $this->extractData($data, $dataType, $instrument));
+            $extractedData = $this->extractData($data, $dataType, $instrument);
+            if (is_array($extractedData)) {
+                $result = array_merge($result, $extractedData);
+            }
         }
-        return $dataType === 'instruments' || $dataType === 'activityIDs' ? array_unique($result) : $result;
+
+        if ($dataType === 'instruments' || $dataType === 'activityIDs') {
+            $result = array_filter($result, function ($item) {
+                return !is_array($item) && !is_numeric($item);
+            });
+            return array_unique($result);
+        }
+
+        return $result;
     }
+
 
     private function fetchDataFromEndpoint(string $endpoint): array
     {
@@ -101,7 +138,7 @@ class DonkiRepository implements DonkiRepositoryInterface
                 ->get("{$this->baseUrl}/DONKI/{$endpoint}", [
                     'api_key' => $this->apiKey,
                     'startDate' => self::YEAR . '-01-01',
-                    'endDate' => self::YEAR . '-12-31'
+                    'endDate' => self::YEAR . '-01-31'
                 ]);
 
             if ($response->successful()) {
@@ -117,12 +154,15 @@ class DonkiRepository implements DonkiRepositoryInterface
     private function extractData(array $data, string $dataType, string $instrument = ''): array
     {
         $result = ['totalActivities' => 0, 'instrumentActivities' => []];
+
         foreach ($data as $item) {
             switch ($dataType) {
                 case 'instruments':
                     if (isset($item['instruments'])) {
                         foreach ($item['instruments'] as $instrumentData) {
-                            $result[] = $instrumentData['displayName'];
+                            if (!empty($instrumentData['displayName'])) {
+                                $result[] = $instrumentData['displayName'];
+                            }
                         }
                     }
                     break;
@@ -132,21 +172,27 @@ class DonkiRepository implements DonkiRepositoryInterface
                     }
                     break;
                 case 'instrumentUsage':
-                    $result['totalActivities']++;
                     if (isset($item['instruments'])) {
                         foreach ($item['instruments'] as $instrumentData) {
                             if ($instrumentData['displayName'] === $instrument) {
-                                $activityType = $item['activityType'] ?? 'Unknown';
-                                if (!isset($result['instrumentActivities'][$activityType])) {
-                                    $result['instrumentActivities'][$activityType] = 0;
+                                $result['totalActivities']++;
+                                if (isset($item['linkedEvents'])) {
+                                    foreach ($item['linkedEvents'] as $linkedEvent) {
+                                        $activityIDParts = explode("-", $linkedEvent['activityID']);
+                                        $activityID = implode("-", array_slice($activityIDParts, -2));
+                                        if (!isset($result['instrumentActivities'][$activityID])) {
+                                            $result['instrumentActivities'][$activityID] = 0;
+                                        }
+                                        $result['instrumentActivities'][$activityID]++;
+                                    }
                                 }
-                                $result['instrumentActivities'][$activityType]++;
                             }
                         }
                     }
                     break;
             }
         }
+
         return $result;
     }
 }

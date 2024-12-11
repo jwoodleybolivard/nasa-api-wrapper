@@ -1,7 +1,8 @@
 {
     "info": {
-        "_postman_id": "your-postman-id",
-        "name": "NASA API WRAPPER",
+        "name": "Donki API Collection",
+        "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+        "description": "Colección de Postman para las rutas de la API de Donki",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -11,9 +12,11 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "{{base_url}}/api/instruments?api_key={{api_key}}",
+                    "raw": "http://nasa-api-wrapper.test/api/instruments",
+                    "protocol": "http",
                     "host": [
-                        "{{base_url}}"
+                        "nasa-api-wrapper",
+                        "test"
                     ],
                     "path": [
                         "api",
@@ -29,9 +32,11 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "{{base_url}}/api/activity-ids?api_key={{api_key}}",
+                    "raw": "http://nasa-api-wrapper.test/api/activity-ids",
+                    "protocol": "http",
                     "host": [
-                        "{{base_url}}"
+                        "nasa-api-wrapper",
+                        "test"
                     ],
                     "path": [
                         "api",
@@ -47,9 +52,11 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "{{base_url}}/api/instrument-usage-percentages?api_key={{api_key}}",
+                    "raw": "http://nasa-api-wrapper.test/api/instrument-usage-percentages",
+                    "protocol": "http",
                     "host": [
-                        "{{base_url}}"
+                        "nasa-api-wrapper",
+                        "test"
                     ],
                     "path": [
                         "api",
@@ -60,41 +67,33 @@
             "response": []
         },
         {
-            "name": "Get Activity Percentage By Instrument",
+            "name": "Get Activity Percentage by Instrument",
             "request": {
-                "method": "POST",
+                "method": "GET",
                 "header": [
                     {
                         "key": "Content-Type",
                         "value": "application/json"
                     }
                 ],
-                "body": {
-                    "mode": "raw",
-                    "raw": "{\n    \"instrument\": \"SWMF\"\n}"
-                },
                 "url": {
-                    "raw": "{{base_url}}/api/instrument-activity-percentage?api_key={{api_key}}",
+                    "raw": "http://nasa-api-wrapper.test/api/instrument-activity-percentage",
+                    "protocol": "http",
                     "host": [
-                        "{{base_url}}"
+                        "nasa-api-wrapper",
+                        "test"
                     ],
                     "path": [
                         "api",
                         "instrument-activity-percentage"
                     ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"instrument\": \"STEREO A: PLASTIC\"}"
                 }
             },
             "response": []
-        }
-    ],
-    "variable": [
-        {
-            "key": "base_url",
-            "value": "http://localhost:8000"
-        },
-        {
-            "key": "api_key",
-            "value": "your_api_key"
         }
     ]
 }
